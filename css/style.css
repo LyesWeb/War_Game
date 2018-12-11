@@ -1,0 +1,9 @@
+#TopBar {
+	-fx-background-color: #c8d6e5;
+	-fx-padding: 5 0 0 20;
+}
+#scoreText {
+	-fx-fill: #db473d;
+	-fx-font-size: 14px;
+    -fx-font-weight: bold;
+}
