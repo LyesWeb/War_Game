@@ -8,7 +8,7 @@ public class Arme {
 private Rectangle corps = new Rectangle(-6,0,10,50);
 private Circle sortie = new Circle(0,0,5);
 
-public Arme(GraphiqueObject player){
+public Arme(GraphicObject player){
 	corps.setTranslateX(player.getCorps().getTranslateX());
 	corps.setTranslateY(player.getCorps().getTranslateY());
 	corps.setFill(Color.GOLD);

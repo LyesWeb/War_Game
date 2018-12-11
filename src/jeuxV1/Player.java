@@ -6,7 +6,7 @@ import java.io.FileNotFoundException;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 
-public class Player extends GraphiqueObject{
+public class Player extends GraphicObject{
 public Player(Zone zone){
 	Image image=null;
 	try {

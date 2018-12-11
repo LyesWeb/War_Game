@@ -7,7 +7,7 @@ import javafx.geometry.Point2D;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 
-public class Balle extends GraphiqueObject{
+public class Balle extends GraphicObject{
 	
 	private Point2D direction = new Point2D(0,0);
 	

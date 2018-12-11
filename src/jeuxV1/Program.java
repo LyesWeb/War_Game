@@ -13,7 +13,6 @@ import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
-import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Line;
 import javafx.scene.shape.Rectangle;
@@ -21,13 +20,22 @@ import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
+import java.io.*;
+import javax.sound.sampled.*;
 
 public class Program extends Application {
 	private GridPane  gp = new GridPane();
-	private static int nb=0;
-	private static int x=0;
-	private static Text nbal= new Text("Balles tires : "+nb);
-	private static Text nmonst= new Text("   |   Monstres tués : " + x);
+	private int nb = 0;
+	private int x = 0;
+	private Text nbal = new Text("   |   Monstres tués : "+nb);
+	private Text nmonst= new Text("Balles tires : " + x);
+	
+	// timer
+	private int s = 0;
+	private int m = 0;
+	
+	private Text time = new Text("   |   Time : "+m+" : "+s);
+	
 	//Les élements de l'interface graphique
 	private double widthWindow=800;
 	private double heightWindow=600;
@@ -40,6 +48,8 @@ public class Program extends Application {
 	private List<Monster> monsters = new ArrayList<>();
 	private List<Balle> balles = new ArrayList<>();
 	Arme arme = new Arme(player);
+
+	private List<Bombe> bombes = new ArrayList<>();
 	
 	public Rectangle porte = new Rectangle(widthWindow-26, 350, 10, 90);
 	private List<Man> mans = new ArrayList<>();
@@ -73,7 +83,8 @@ public class Program extends Application {
 				container.getChildren().add(balle.getCorps());
 				balles.add(balle);
 				nb++;
-				nmonst.setText("   |   Monstres tués : "+nb);
+				nmonst.setText("Balles tires : "+nb);
+				Tools.SoundBalleShot();
 			}
 			if(event.getCode()==KeyCode.UP){
 				player.getCorps().setTranslateY(player.getCorps().getTranslateY()-5);
@@ -106,18 +117,31 @@ public class Program extends Application {
 		for(Balle balle:balles){
 			for(Monster monstre:monsters){
 				if(balle.touch(monstre)){
-					container.getChildren().removeAll(balle.getCorps(),monstre.getCorps(), monstre.b.getCorps());
+					container.getChildren().removeAll(balle.getCorps(),monstre.getCorps());
 					balle.setAlive(false);
 					monstre.setAlive(false);
 					x++;
-					nbal.setText("Balles tires : " + x);
+					nbal.setText("   |   Monstres tués : " + x);
 				}
 			}
 		}
 		
-		monsters.removeIf(GraphiqueObject::isDead);
-		balles.removeIf(GraphiqueObject::isDead);
-		mans.removeIf(GraphiqueObject::isDead);
+		for(Bombe b:bombes){
+			for(Man m:mans){
+				if(b.touch(m)){
+					container.getChildren().removeAll(b.getCorps(),m.getCorps());
+					b.setAlive(false);
+					m.setAlive(false);
+					Tools.SoundBoom();
+				}
+			}
+		}
+		
+		monsters.removeIf(GraphicObject::isDead);
+		balles.removeIf(GraphicObject::isDead);
+		mans.removeIf(GraphicObject::isDead);
+		bombes.removeIf(GraphicObject::isDead);
+		mans.removeIf(GraphicObject::isDead);
 
 		
 		for(Balle balle:balles){
@@ -126,9 +150,9 @@ public class Program extends Application {
 		if(Math.random()<0.01){
 			Monster m=new Monster(zone1);
 			container.getChildren().add(m.getCorps());
-			container.getChildren().add(m.b.corps);
 			monsters.add(m);
 		}
+		
 		if(Math.random()<0.0099) {
 			Man man = new Man(zone2);
 			container.getChildren().add(man.getCorps());
@@ -151,10 +175,19 @@ public class Program extends Application {
 				r.setAlive(false);
 			}
 		}
-		
-		for(Monster mo:monsters){
-			mo.b.update();
+		if(Math.random() < 0.08)
+		for(Monster monster:monsters){
+			if(Math.random() < 0.009) {
+				Bombe b = new Bombe(monster);
+				container.getChildren().add(b.corps);
+				bombes.add(b);
+			}
 		}
+		
+		for(Bombe bo:bombes){
+			bo.update();
+		}
+		
 	}
 	public static void main(String[] args) {
 		Application.launch();
@@ -177,7 +210,9 @@ public class Program extends Application {
         	nbal.setFill(Color.WHITE);
         	nmonst.setFont(Font.font("Verdana", FontWeight.NORMAL, 13));
         	nmonst.setFill(Color.WHITE);
-            this.getChildren().addAll(nbal,nmonst);
+        	time.setFont(Font.font("Verdana", FontWeight.NORMAL, 13));
+        	time.setFill(Color.WHITE);
+            this.getChildren().addAll(nmonst, nbal, time);
             this.setStyle("-fx-padding: 5 0 5 10;-fx-background-color: #7fb0ff;");
             this.setMinWidth(widthWindow);
         }

@@ -4,10 +4,8 @@ import java.io.FileInputStream;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 
-public class Monster extends GraphiqueObject{
-	
-	public Bombe b;
-	
+public class Monster extends GraphicObject{
+		
 	public Monster(Zone zone){
 		
 		Image image=null;
@@ -26,7 +24,6 @@ public class Monster extends GraphiqueObject{
 		corps.setTranslateX(x);
 		corps.setTranslateY(y);
 		
-		b = new Bombe(this);
 	}
 
 }

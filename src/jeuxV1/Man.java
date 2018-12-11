@@ -6,7 +6,7 @@ import java.io.FileNotFoundException;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 
-public class Man extends GraphiqueObject{
+public class Man extends GraphicObject{
 	
 	public Man(Zone zone){
 		Image image=null;
@@ -22,8 +22,8 @@ public class Man extends GraphiqueObject{
 		((ImageView)corps).setY(0);
 		
 
-		((ImageView)corps).setFitHeight(34);
-		((ImageView)corps).setFitWidth(34);
+		((ImageView)corps).setFitHeight(45);
+		((ImageView)corps).setFitWidth(45);
 		
 //		double x=0;
 //		double y=zone.getY2()-zone.getY1()*Math.random();
