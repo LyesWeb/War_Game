@@ -1,20 +1,19 @@
 package jeuxV1;
 
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 
 public class Monster extends GraphiqueObject{
 	
+	public Bombe b;
+	
 	public Monster(Zone zone){
+		
 		Image image=null;
 		try {
 			image = new Image(new FileInputStream("photosJeu/monster.png"));
-			
-		} catch (FileNotFoundException e) {
-			// TODO Auto-generated catch block
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 		corps=new ImageView(image);
@@ -26,6 +25,8 @@ public class Monster extends GraphiqueObject{
 		double y=zone.getY1()+(zone.getY2()-zone.getY1())*Math.random();
 		corps.setTranslateX(x);
 		corps.setTranslateY(y);
+		
+		b = new Bombe(this);
 	}
 
 }
