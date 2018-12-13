@@ -30,7 +30,6 @@ public class Program extends Application {
 	private int x = 0;
 	private Text nbal = new Text("   |   Monstres tués : "+nb);
 	private Text nmonst= new Text("Balles tires : " + x);
-	
 	// timer
 	private int s = 0;
 	private int m = 0;
