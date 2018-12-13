@@ -1,18 +1,21 @@
 package jeuxV1;
 
+import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.List;
-
 import javafx.animation.AnimationTimer;
 import javafx.application.Application;
 import javafx.event.EventHandler;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
+import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Line;
 import javafx.scene.shape.Rectangle;
@@ -20,8 +23,6 @@ import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
-import java.io.*;
-import javax.sound.sampled.*;
 
 public class Program extends Application {
 	private GridPane  gp = new GridPane();
@@ -35,7 +36,10 @@ public class Program extends Application {
 	private int m = 0;
 	
 	private Text time = new Text("   |   Time : "+m+" : "+s);
-	
+	private int nbLife = 3;
+	private Text nbLifeText = new Text("   |   Life : "+nbLife);
+	private Boolean isGameOver = false;
+
 	//Les élements de l'interface graphique
 	private double widthWindow=800;
 	private double heightWindow=600;
@@ -48,18 +52,61 @@ public class Program extends Application {
 	private List<Monster> monsters = new ArrayList<>();
 	private List<Balle> balles = new ArrayList<>();
 	Arme arme = new Arme(player);
-
 	private List<Bombe> bombes = new ArrayList<>();
 	
 	public Rectangle porte = new Rectangle(widthWindow-26, 350, 10, 90);
 	private List<Man> mans = new ArrayList<>();
+	HBox toolBar = new HBox();
 	
 	//AnimationTimer
 	AnimationTimer animation=new AnimationTimer(){
 
 		@Override
 		public void handle(long now) {
-			refreshContent();
+			if(isGameOver) {
+				animation.stop();
+				container.getChildren().clear();
+				ImageView gameOver = null;
+				try {
+					gameOver = Tools.createImageView("photosJeu/gameOver.png");
+				} catch (FileNotFoundException e) {
+					e.printStackTrace();
+				}
+				ImageView replay = null;
+				try {
+					replay = Tools.createImageView("photosJeu/replay.png");
+				} catch (FileNotFoundException e) {
+					e.printStackTrace();
+				}
+				replay.addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
+				     @Override
+				     public void handle(MouseEvent event) {
+				    	 container.getChildren().clear();
+				    	 isGameOver = false;
+				    	 createContent();
+				    	 animation.start();
+				     }
+				});
+				replay.setFitWidth(110);
+				replay.setFitHeight(40);
+				Text finalTime = new Text("Your final time : 0:0");
+				Text finalMonstre = new Text("You kill : "+nb);
+				finalTime.setFont(Font.font("Verdana", FontWeight.NORMAL, 20));
+				finalTime.setFill(Color.BLACK);
+				Text finalBalles = new Text("Balles : "+x);
+				finalMonstre.setFont(Font.font("Verdana", FontWeight.NORMAL, 20));
+				finalMonstre.setFill(Color.BLACK);
+				finalBalles.setFont(Font.font("Verdana", FontWeight.NORMAL, 20));
+				finalBalles.setFill(Color.BLACK);
+				VBox cc = new VBox();
+				cc.setPrefWidth(widthWindow);
+				cc.setPrefHeight(heightWindow);
+				cc.setAlignment(Pos.CENTER);
+				cc.getChildren().addAll(gameOver,finalTime,finalMonstre,finalBalles,replay);
+				container.getChildren().addAll(cc);
+			}else {				
+				refreshContent();
+			}
 		}
 		
 	};
@@ -125,7 +172,7 @@ public class Program extends Application {
 				}
 			}
 		}
-		
+
 		for(Bombe b:bombes){
 			for(Man m:mans){
 				if(b.touch(m)){
@@ -134,6 +181,18 @@ public class Program extends Application {
 					m.setAlive(false);
 					Tools.SoundBoom();
 				}
+			}
+		}
+		for(Bombe b:bombes){
+			if(b.touch(player)){
+				container.getChildren().remove(b.getCorps());
+				b.setAlive(false);
+				Tools.SoundBoom();
+				nbLife--;
+				if(nbLife<=0) {
+					isGameOver = true;
+				}
+				nbLifeText.setText("   |   Life : "+nbLife);
 			}
 		}
 		
@@ -191,7 +250,6 @@ public class Program extends Application {
 	}
 	public static void main(String[] args) {
 		Application.launch();
-
 	}
 
 	private void createContent(){
@@ -202,6 +260,14 @@ public class Program extends Application {
 		container.getChildren().add(player.getCorps());
 		container.getChildren().add(arme.getCorps());
 		container.getChildren().add(arme.getSortie());
+		
+		toolBar.setAlignment(Pos.CENTER_RIGHT);
+        toolBar.setPrefHeight(25);
+        toolBar.setMinHeight(25);
+        toolBar.setMaxHeight(25);
+        toolBar.getChildren().add(new topBar());
+        container.getChildren().add(toolBar);
+		
 	}
 	
 	class topBar extends HBox {
@@ -212,7 +278,9 @@ public class Program extends Application {
         	nmonst.setFill(Color.WHITE);
         	time.setFont(Font.font("Verdana", FontWeight.NORMAL, 13));
         	time.setFill(Color.WHITE);
-            this.getChildren().addAll(nmonst, nbal, time);
+        	nbLifeText.setFont(Font.font("Verdana", FontWeight.NORMAL, 13));
+        	nbLifeText.setFill(Color.WHITE);
+            this.getChildren().addAll(nmonst, nbal, time,nbLifeText);
             this.setStyle("-fx-padding: 5 0 5 10;-fx-background-color: #7fb0ff;");
             this.setMinWidth(widthWindow);
         }
@@ -224,15 +292,6 @@ public class Program extends Application {
 		window.setHeight(heightWindow);
 		window.setTitle("jeu de guerre");
 		createContent();		
-		
-		HBox toolBar = new HBox();
-		toolBar.setAlignment(Pos.CENTER_RIGHT);
-        toolBar.setPrefHeight(25);
-        toolBar.setMinHeight(25);
-        toolBar.setMaxHeight(25);
-        toolBar.getChildren().add(new topBar());
-        container.getChildren().add(toolBar);
-		
 		Scene scene=new Scene(container);
 		window.setScene(scene);
 		animation.start();
