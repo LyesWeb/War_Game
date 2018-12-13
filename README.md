@@ -1,2 +1,2 @@
-# Guerre_Game
+# War Game
 War Game JavaFx
