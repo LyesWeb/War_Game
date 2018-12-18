@@ -28,7 +28,7 @@ public class Tools {
 	}
 	public static void SoundBalleShot(){
 		try {
-	          File soundFile = new File("sound/shot1.wav"); 
+	          File soundFile = new File("sound/shot2.wav"); 
 	          AudioInputStream audioIn = AudioSystem.getAudioInputStream(soundFile);              
 	          Clip clip = AudioSystem.getClip();
 	          clip.open(audioIn);
@@ -44,6 +44,51 @@ public class Tools {
 	public static void SoundBoom(){
 		try {
 	          File soundFile = new File("sound/boom.wav"); 
+	          AudioInputStream audioIn = AudioSystem.getAudioInputStream(soundFile);              
+	          Clip clip = AudioSystem.getClip();
+	          clip.open(audioIn);
+	          clip.start();
+		} catch (UnsupportedAudioFileException e) {
+	    	  e.printStackTrace();
+	    } catch (IOException e) {
+	    	  e.printStackTrace();
+	    } catch (LineUnavailableException e) {
+	    	  e.printStackTrace();
+	    }
+	}
+	public static void SoundPlayerDead(){
+		try {
+	          File soundFile = new File("sound/dead.wav"); 
+	          AudioInputStream audioIn = AudioSystem.getAudioInputStream(soundFile);              
+	          Clip clip = AudioSystem.getClip();
+	          clip.open(audioIn);
+	          clip.start();
+		} catch (UnsupportedAudioFileException e) {
+	    	  e.printStackTrace();
+	    } catch (IOException e) {
+	    	  e.printStackTrace();
+	    } catch (LineUnavailableException e) {
+	    	  e.printStackTrace();
+	    }
+	}
+	public static void SoundBgCrow(){
+		try {
+	          File soundFile = new File("sound/crow.wav"); 
+	          AudioInputStream audioIn = AudioSystem.getAudioInputStream(soundFile);              
+	          Clip clip = AudioSystem.getClip();
+	          clip.open(audioIn);
+	          clip.start();
+		} catch (UnsupportedAudioFileException e) {
+	    	  e.printStackTrace();
+	    } catch (IOException e) {
+	    	  e.printStackTrace();
+	    } catch (LineUnavailableException e) {
+	    	  e.printStackTrace();
+	    }
+	}
+	public static void SoundBgCardriving(){
+		try {
+	          File soundFile = new File("sound/cardriving.wav"); 
 	          AudioInputStream audioIn = AudioSystem.getAudioInputStream(soundFile);              
 	          Clip clip = AudioSystem.getClip();
 	          clip.open(audioIn);

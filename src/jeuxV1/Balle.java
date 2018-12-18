@@ -1,11 +1,10 @@
 package jeuxV1;
 
-
+import java.io.FileInputStream;
 
 import javafx.geometry.Point2D;
-
-import javafx.scene.paint.Color;
-import javafx.scene.shape.Circle;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 
 public class Balle extends GraphicObject{
 	
@@ -13,21 +12,28 @@ public class Balle extends GraphicObject{
 	
 	
 	public Balle(Arme arme){
-		corps=new Circle(0,0,4,Color.BLUE);
-		corps.setTranslateX(arme.getSortie().getTranslateX());
+		Image image = null;
+		try {
+			image = new Image(new FileInputStream("photosJeu/balle7.png"));
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		corps = new ImageView(image);
+		((ImageView)corps).setX(0);
+		((ImageView)corps).setY(0);
+		((ImageView)corps).setFitWidth(6);
+		((ImageView)corps).setFitHeight(6);
+		corps.setTranslateX(arme.getSortie().getTranslateX()-7);
 		corps.setTranslateY(arme.getSortie().getTranslateY());
 		updateDirection(arme.getRotate());
 	}
-	
 	
 	private void updateDirection(double rotation){
 		Point2D p;
 		double x=Math.cos(Math.toRadians(rotation));
 		double y=Math.sin(Math.toRadians(rotation));
 		p=new Point2D(x,y);
-		direction=p.normalize().multiply(5);
-		
-
+		direction=p.normalize().multiply(9);
 	}
 	
 	public void update(){

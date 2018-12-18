@@ -12,17 +12,17 @@ public class Bombe extends GraphicObject {
 	public Bombe(Monster m){
 		Image image = null;
 		try {
-			image = new Image(new FileInputStream("photosJeu/bombe.png"));
+			image = new Image(new FileInputStream("photosJeu/bombe4.png"));
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 		corps = new ImageView(image);
 		((ImageView)corps).setX(0);
 		((ImageView)corps).setY(0);
-		((ImageView)corps).setFitWidth(37);
-		((ImageView)corps).setFitHeight(37);
-		corps.setTranslateX(m.getCorps().getTranslateX()+20);
-		corps.setTranslateY(m.getCorps().getTranslateY()+20);
+		((ImageView)corps).setFitWidth(19);
+		((ImageView)corps).setFitHeight(19);
+		corps.setTranslateX(m.getCorps().getTranslateX()+10);
+		corps.setTranslateY(m.getCorps().getTranslateY()+10);
 		updateDirection();
 	}
 

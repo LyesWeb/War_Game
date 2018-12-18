@@ -10,13 +10,15 @@ public class Monster extends GraphicObject{
 		
 		Image image=null;
 		try {
-			image = new Image(new FileInputStream("photosJeu/monster.png"));
+			image = new Image(new FileInputStream("photosJeu/monster3.gif"));
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 		corps=new ImageView(image);
 		((ImageView)corps).setX(0);
 		((ImageView)corps).setY(0);
+		((ImageView)corps).setFitHeight(130);
+		((ImageView)corps).setFitWidth(130);
 		
 		//doit appartenir zone
 		double x=zone.getX1()+(zone.getX2()-zone.getX1())*Math.random();

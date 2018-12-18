@@ -12,9 +12,8 @@ public class Man extends GraphicObject{
 		Image image=null;
 		try {
 			Image[] imgs = new Image[3];
-			imgs[0] = new Image(new FileInputStream("photosJeu/men.png"));
-			imgs[1] = new Image(new FileInputStream("photosJeu/men1.png"));
-			imgs[2] = new Image(new FileInputStream("photosJeu/men2.png"));
+			imgs[0] = new Image(new FileInputStream("photosJeu/men1.gif"));
+			imgs[1] = new Image(new FileInputStream("photosJeu/men2.gif"));
 			image = imgs[(int) Tools.getRandom(0, 2)];
 			
 		} catch (FileNotFoundException e) {
@@ -26,14 +25,11 @@ public class Man extends GraphicObject{
 		((ImageView)corps).setY(0);
 		
 
-		((ImageView)corps).setFitHeight(43);
-		((ImageView)corps).setFitWidth(43);
+		((ImageView)corps).setFitHeight(50);
+		((ImageView)corps).setFitWidth(80);
 		
-//		double x=0;
-//		double y=zone.getY2()-zone.getY1()*Math.random();
 		corps.setTranslateX(10);
 		corps.setTranslateY(Tools.getRandom(zone.getY1(),zone.getY2()));
-	
 		
 	}
 	
